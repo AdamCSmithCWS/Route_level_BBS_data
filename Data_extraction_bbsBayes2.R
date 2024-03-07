@@ -4,6 +4,7 @@
 
 library(bbsBayes2)
 library(tidyverse)
+if(!dir.exists("output")){dir.create("output")}
 
 # run to download recent data
 #fetch_bbs_data()
@@ -71,6 +72,10 @@ if(class(sp_data) == "try-error"){ #if not enough data skip to next species
 
   all_data <- bind_rows(all_data,
                         sp_df)
+  ## alternate csv save of single species data
+  ## may be more efficient as the all_data object will be very large
+  ## >10s of millions of rows
+  # write_csv(sp_df,file = paste0("output/BBS_data_",sp_numeric,".csv"))
   
   rm(list = c("sp_df","sp_data"))
 }
@@ -81,7 +86,7 @@ if(any(is.na(all_data$latitude))){
 
 
 
-saveRDS(all_data,"all_data_with_zeros.RDS")
+saveRDS(all_data,"output/all_data_with_zeros.RDS")
 
 
 
